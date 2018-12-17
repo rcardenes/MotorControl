@@ -58,7 +58,7 @@ static QString translatePacket(QString message, char packet[4], int pos)
 }
 
 void
-SerialComm::sendCmd(SerialComm::Command cmd, uint8_t size, uint16_t data)
+SerialComm::writeCommand(uint16_t cmd, uint16_t size, uint16_t data, bool expectResponse)
 {
     if (!serialPort.isOpen()) {
         emit this->errorMessage("Serial port not setup");

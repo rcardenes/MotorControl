@@ -13,6 +13,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     serialThread = new QThread(this);
     SerialComm *serialComms = new SerialComm();
+    motorModel = new MotorModel(serialComms, this);
 
     connect(
                 this, &MainWindow::setSerialComms,
@@ -22,11 +23,6 @@ MainWindow::MainWindow(QWidget *parent) :
     connect(
                 serialComms, &SerialComm::setup,
                 this, &MainWindow::serialCommsSetupDone
-    );
-
-    connect(
-                this, &MainWindow::sendCmd,
-                serialComms, &SerialComm::sendCmd
     );
 
     connect(
@@ -72,17 +68,17 @@ void MainWindow::on_targetSpeedSlider_valueChanged(int value)
 void MainWindow::on_targetSpeedSpinBox_valueChanged(double value)
 {
     ui->targetSpeedSlider->setValue(int(value * 10));
-    emit sendCmd(SerialComm::SliderSet, SerialComm::SetTargetSpeed, MotorModel::doubleToQ15(value));
+    motorModel->setSpeedTarget(value);
 }
 
 void MainWindow::on_loopControlComboBox_currentIndexChanged(int index)
 {
-    emit sendCmd(SerialComm::SliderSet, SerialComm::SetLsw, static_cast<uint16_t>(index));
+    motorModel->setLsw(static_cast<MotorModel::LswStates>(index));
 }
 
 void MainWindow::on_checkBox_toggled(bool checked)
 {
-    emit sendCmd(SerialComm::SliderSet, SerialComm::SetMotorEngage, checked ? 1: 0);
+    motorModel->setMotorEngage(checked);
 }
 
 void MainWindow::on_setupPushButton_clicked()

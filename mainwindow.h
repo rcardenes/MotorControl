@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "QThread"
 #include "serialcomm.h"
+#include "motormodel.h"
 
 namespace Ui {
 class MainWindow;
@@ -19,7 +20,6 @@ public:
 
 signals:
     void setSerialComms(QString);
-    void sendCmd(SerialComm::Command, uint8_t, uint16_t);
     void connectClicked();
     void disconnectClicked();
 
@@ -31,20 +31,16 @@ public slots:
 
 private slots:
     void on_targetSpeedSlider_valueChanged(int value);
-
     void on_targetSpeedSpinBox_valueChanged(double arg1);
-
     void on_loopControlComboBox_currentIndexChanged(int index);
-
     void on_checkBox_toggled(bool checked);
-
     void on_setupPushButton_clicked();
-
     void on_connectPushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
     QThread *serialThread;
+    MotorModel *motorModel;
     bool next_connect;
 };
 

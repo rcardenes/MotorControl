@@ -3,6 +3,7 @@
 #include <QSerialPortInfo>
 #include <QStringListModel>
 #include <QPushButton>
+#include <QMutexLocker>
 
 SelectSerialDialog::SelectSerialDialog(QWidget *parent) :
     QDialog(parent),

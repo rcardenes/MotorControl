@@ -7,24 +7,10 @@
 class SerialComm : public QObject
 {
     Q_OBJECT
+
 public:
     explicit SerialComm(QObject *parent = nullptr);
 
-    enum Command {
-        LifePulseTsk,
-        TextSet,
-        ButtonSet,
-        SliderSet,
-        VariableGet,
-        ArrayGet,
-        DataGet
-    };
-
-    enum SliderType {
-        SetLsw = 0,
-        SetTargetSpeed = 2,
-        SetMotorEngage = 4
-    };
 
 signals:
     void cmdAck(QString);
@@ -36,7 +22,7 @@ signals:
 
 public slots:
     void setupSerialPort(QString name);
-    void sendCmd(SerialComm::Command cmd, uint8_t size, uint16_t data);
+    void writeCommand(uint16_t cmd, uint16_t size, uint16_t data, bool expectResponse);
     void connectToDevice();
     void disconnectFromDevice();
 
